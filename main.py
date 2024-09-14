@@ -1,4 +1,5 @@
 from fastapi import FastAPI, HTTPException, Depends
+from fastapi.middleware.cors import CORSMiddleware
 from pydantic import BaseModel
 from typing import List
 from sqlalchemy import Column, Integer, String, create_engine
@@ -6,6 +7,15 @@ from sqlalchemy.ext.declarative import declarative_base
 from sqlalchemy.orm import sessionmaker, Session
 
 app = FastAPI()
+
+# CORS configuration
+app.add_middleware(
+    CORSMiddleware,
+    allow_origins=["*"],  # You can specify allowed origins here, e.g., ["http://localhost:3000"]
+    allow_credentials=True,
+    allow_methods=["*"],  # Or specify allowed methods, e.g., ["GET", "POST"]
+    allow_headers=["*"],  # Or specify allowed headers, e.g., ["Content-Type"]
+)
 
 # Database setup
 DATABASE_URL = "sqlite:///./test.db"
@@ -45,8 +55,6 @@ def get_db():
 @app.get("/")
 def read_root():
     return {"message": "Welcome to Fruit.ai API"}
-
-
 
 @app.get("/faqs", response_model=List[FAQ])
 def get_faqs(db: Session = Depends(get_db)):
