@@ -61,7 +61,7 @@ def get_faq(id: int, db: Session = Depends(get_db)):
 
 @app.post("/faqs", response_model=FAQ)
 def create_faq(faq: FAQ, db: Session = Depends(get_db)):
-    db_faq = FAQModel(id=faq.id, question=faq.question, answer=faq.answer)
+    db_faq = FAQModel(question=faq.question, answer=faq.answer)
     db.add(db_faq)
     db.commit()
     db.refresh(db_faq)
@@ -72,8 +72,10 @@ def update_faq(id: int, faq: FAQ, db: Session = Depends(get_db)):
     db_faq = db.query(FAQModel).filter(FAQModel.id == id).first()
     if db_faq is None:
         raise HTTPException(status_code=404, detail="FAQ not found")
-    db_faq.question = faq.question
-    db_faq.answer = faq.answer
+    if faq.question:
+        db_faq.question = faq.question
+    if faq.answer:
+        db_faq.answer = faq.answer
     db.commit()
     db.refresh(db_faq)
     return db_faq
