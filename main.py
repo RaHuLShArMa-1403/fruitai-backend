@@ -20,14 +20,22 @@ class TranslationRequest(BaseModel):
 
 @app.post("/translate")
 async def translate(request: TranslationRequest):
+    headers = {
+        "Content-Type": "application/json",
+        # Add your API key here if required by LibreTranslate
+        # "Authorization": "Bearer YOUR_API_KEY"
+    }
+
+    payload = {
+        "q": request.text,
+        "source": request.source,
+        "target": request.target,
+        "format": "text"
+    }
+
     async with httpx.AsyncClient() as client:
         try:
-            response = await client.post("https://libretranslate.de/translate", json={
-                "q": request.text,
-                "source": request.source,
-                "target": request.target,
-                "format": "text"
-            })
+            response = await client.post("https://libretranslate.de/translate", headers=headers, json=payload)
             response.raise_for_status()
             return response.json()
         except httpx.HTTPStatusError as e:
