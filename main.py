@@ -9,9 +9,29 @@ from sqlalchemy.orm import sessionmaker, Session
 from passlib.context import CryptContext
 from jose import JWTError, jwt
 from datetime import datetime, timedelta
-
+import httpx
 # FastAPI app setup
 app = FastAPI()
+
+class TranslationRequest(BaseModel):
+    text: str
+    source: str
+    target: str
+
+@app.post("/translate")
+async def translate(request: TranslationRequest):
+    async with httpx.AsyncClient() as client:
+        try:
+            response = await client.post("https://libretranslate.de/translate", json={
+                "q": request.text,
+                "source": request.source,
+                "target": request.target,
+                "format": "text"
+            })
+            response.raise_for_status()
+            return response.json()
+        except httpx.HTTPStatusError as e:
+            raise HTTPException(status_code=e.response.status_code, detail=str(e))
 
 # CORS configuration
 app.add_middleware(
