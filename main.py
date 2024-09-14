@@ -41,6 +41,17 @@ def get_db():
         db.close()
 
 # CRUD operations
+
+@app.get("/")
+def read_root():
+    return {"message": "Welcome to Fruit.ai API"}
+
+
+
+@app.get("/faqs")
+def get_faqs():
+    return {"faqs": "Here we will list all FAQs"}
+
 @app.get("/faqs", response_model=List[FAQ])
 def get_faqs(db: Session = Depends(get_db)):
     return db.query(FAQModel).all()
