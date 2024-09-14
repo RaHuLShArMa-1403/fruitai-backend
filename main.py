@@ -48,9 +48,7 @@ def read_root():
 
 
 
-@app.get("/faqs")
-def get_faqs():
-    return {"faqs": "Here we will list all FAQs"}
+
 
 @app.get("/faqs", response_model=List[FAQ])
 def get_faqs(db: Session = Depends(get_db)):
