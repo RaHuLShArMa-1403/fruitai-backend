@@ -47,6 +47,7 @@ def read_root():
     return {"message": "Welcome to Fruit.ai API"}
 
 
+
 @app.get("/faqs", response_model=List[FAQ])
 def get_faqs(db: Session = Depends(get_db)):
     return db.query(FAQModel).all()
