@@ -167,6 +167,11 @@ async def login(form_data: User):
 def read_root():
     return {"message": "Welcome to Fruit.ai API"}
 
+#Head end point
+@app.head("/")
+async def head_root():
+    return
+
 @app.get("/faqs", response_model=List[FAQ])
 def get_faqs(db: Session = Depends(get_db)):
     return db.query(FAQModel).all()
