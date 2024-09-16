@@ -1,14 +1,15 @@
 
-### **Backend README (FastAPI)**
+# **Backend README (FastAPI)**
 ```markdown
-# Fruit.Ai Backend
-
+Fruit.Ai Backend
 This is the backend for the Fruit.Ai project, built using FastAPI. It handles the APIs for FAQs and other backend logic.
+Hosted Link : https://fruitai-backend.onrender.com/
 
+```
 ## Setup
 1. Clone the repository:
     ```bash
-    git clone <repository-url>
+    git clone <https://github.com/RaHuLShArMa-1403/fruitai-backend>
     cd fruitai-backend
     ```
 2. Create a virtual environment and activate it:
